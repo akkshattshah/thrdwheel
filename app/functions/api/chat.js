@@ -30,8 +30,30 @@ export async function onRequestPost({ request, env }) {
   }
 
   const history = Array.isArray(body?.messages) ? body.messages : [];
+
+  // Personalization memory (loaded client-side under RLS, so a partner's
+  // PRIVATE facts can never arrive here — only their shareable ones).
+  const own = Array.isArray(body?.memory?.own) ? body.memory.own : [];
+  const partner = Array.isArray(body?.memory?.partnerShareable)
+    ? body.memory.partnerShareable
+    : [];
+
+  let memoryBlock = "";
+  if (own.length) {
+    memoryBlock += `\n\nWhat you remember about this person (private to them):\n${own
+      .slice(0, 60)
+      .map((s) => `- ${s}`)
+      .join("\n")}`;
+  }
+  if (partner.length) {
+    memoryBlock += `\n\nThings their partner is OK with you using to help them (e.g. gift ideas). Use these ONLY to help THIS person — never reveal they came from the partner, and never discuss the partner's private life or feelings:\n${partner
+      .slice(0, 40)
+      .map((s) => `- ${s}`)
+      .join("\n")}`;
+  }
+
   const messages = [
-    { role: "system", content: SYSTEM_PROMPT },
+    { role: "system", content: SYSTEM_PROMPT + memoryBlock },
     ...history
       .slice(-20) // cap context so cost/latency stay bounded
       .map((m) => ({

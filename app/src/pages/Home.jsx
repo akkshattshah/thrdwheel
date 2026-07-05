@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase.js";
+import { loadMemories, saveMemories } from "../lib/memory.js";
 import BrandMark from "../components/BrandMark.jsx";
 
 export default function Home({ session, profile, couple, onLeave }) {
@@ -10,12 +11,14 @@ export default function Home({ session, profile, couple, onLeave }) {
     {
       id: "greet",
       role: "ai",
-      text: `hey ${myName}. this space is just for you — nothing here is saved, and i never repeat it to anyone. what's on your mind?`,
+      text: `hey ${myName}. this space is just for you — what you tell me stays private to you, and i never repeat it to anyone. what's on your mind?`,
     },
   ]);
   const [draft, setDraft] = useState("");
   const [typing, setTyping] = useState(false);
   const scrollRef = useRef(null);
+  const memoryRef = useRef({ own: [], partnerShareable: [] });
+  const turnsRef = useRef(0);
 
   // Load the partner's first name (RLS allows reading same-couple profiles).
   useEffect(() => {
@@ -31,6 +34,43 @@ export default function Home({ session, profile, couple, onLeave }) {
         if (data?.name) setPartnerName(data.name.split(" ")[0]);
       });
   }, [couple, myId]);
+
+  // Load accumulated memory: my own facts + my partner's shareable ones.
+  useEffect(() => {
+    loadMemories(myId, couple.id).then((mem) => {
+      memoryRef.current = mem;
+    });
+  }, [myId, couple.id]);
+
+  // Every few turns, distill new durable facts into memory (best-effort).
+  async function extractAndSave(convo) {
+    try {
+      const res = await fetch("/api/extract", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: convo
+            .filter((m) => m.id !== "greet")
+            .map((m) => ({
+              role: m.role === "user" ? "user" : "assistant",
+              content: m.text,
+            })),
+          known: memoryRef.current.own,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      const facts = Array.isArray(data.facts) ? data.facts : [];
+      if (facts.length) {
+        await saveMemories(myId, couple.id, facts);
+        memoryRef.current = {
+          ...memoryRef.current,
+          own: [...memoryRef.current.own, ...facts.map((f) => f.content)],
+        };
+      }
+    } catch {
+      /* memory is best-effort; never let it disrupt the chat */
+    }
+  }
 
   // Keep the view pinned to the newest message.
   useEffect(() => {
@@ -61,6 +101,7 @@ export default function Home({ session, profile, couple, onLeave }) {
               role: m.role === "user" ? "user" : "assistant",
               content: m.text,
             })),
+          memory: memoryRef.current,
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -68,7 +109,12 @@ export default function Home({ session, profile, couple, onLeave }) {
         res.ok && data.reply
           ? data.reply
           : "sorry, i'm having trouble thinking right now — give me a moment and try again.";
-      setMessages((m) => [...m, { id: `a-${Date.now()}`, role: "ai", text: reply }]);
+      const withReply = [...next, { id: `a-${Date.now()}`, role: "ai", text: reply }];
+      setMessages(withReply);
+
+      // Distill memory every 3rd user turn (fire-and-forget).
+      turnsRef.current += 1;
+      if (turnsRef.current % 3 === 0) extractAndSave(withReply);
     } catch {
       setMessages((m) => [
         ...m,
@@ -111,7 +157,7 @@ export default function Home({ session, profile, couple, onLeave }) {
         <div className="chat">
           <div className="chat__scroll" ref={scrollRef}>
             <div className="chat__note">
-              🔒 private to you · not saved · never shared with {partnerName}
+              🔒 private to you · never shared with {partnerName}
             </div>
 
             {messages.map((m) => (
