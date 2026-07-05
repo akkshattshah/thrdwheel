@@ -47,10 +47,10 @@ export default function MemoryPanel({ userId, partnerName, onClose }) {
         </div>
 
         <p className="sheet__intro">
-          things i've picked up about you. flip one to{" "}
-          <strong>shared</strong> and {partnerName}'s side can get gentle hints
-          from it — for gifts and surprises. everything else stays private to
-          you.
+          here's what i remember about you. the <strong>shared</strong> ones
+          (your interests &amp; likes) let {partnerName}'s side get gift &amp;
+          surprise hints — pull any back to private anytime. your feelings and
+          private thoughts never leave this space.
         </p>
 
         {items === null ? (

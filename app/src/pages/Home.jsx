@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase.js";
 import { loadMemories, saveMemories } from "../lib/memory.js";
+import { loadHistory, saveMessage } from "../lib/messages.js";
 import BrandMark from "../components/BrandMark.jsx";
 import MemoryPanel from "../components/MemoryPanel.jsx";
 
@@ -20,7 +21,6 @@ export default function Home({ session, profile, couple, onLeave }) {
   const [showMemory, setShowMemory] = useState(false);
   const scrollRef = useRef(null);
   const memoryRef = useRef({ own: [], partnerShareable: [] });
-  const turnsRef = useRef(0);
 
   // Load the partner's first name (RLS allows reading same-couple profiles).
   useEffect(() => {
@@ -43,6 +43,13 @@ export default function Home({ session, profile, couple, onLeave }) {
       memoryRef.current = mem;
     });
   }, [myId, couple.id]);
+
+  // Resume my past conversation across sessions (transcripts are stored now).
+  useEffect(() => {
+    loadHistory(myId).then((history) => {
+      if (history.length) setMessages(history);
+    });
+  }, [myId]);
 
   // Every few turns, distill new durable facts into memory (best-effort).
   async function extractAndSave(convo) {
@@ -107,16 +114,20 @@ export default function Home({ session, profile, couple, onLeave }) {
         }),
       });
       const data = await res.json().catch(() => ({}));
-      const reply =
-        res.ok && data.reply
-          ? data.reply
-          : "sorry, i'm having trouble thinking right now — give me a moment and try again.";
+      const ok = res.ok && data.reply;
+      const reply = ok
+        ? data.reply
+        : "sorry, i'm having trouble thinking right now — give me a moment and try again.";
       const withReply = [...next, { id: `a-${Date.now()}`, role: "ai", text: reply }];
       setMessages(withReply);
 
-      // Distill memory every 3rd user turn (fire-and-forget).
-      turnsRef.current += 1;
-      if (turnsRef.current % 3 === 0) extractAndSave(withReply);
+      if (ok) {
+        // Persist the full transcript (both lines).
+        saveMessage(myId, couple.id, "user", text);
+        saveMessage(myId, couple.id, "ai", reply);
+        // Refresh the structured profile every turn (fire-and-forget).
+        extractAndSave(withReply);
+      }
     } catch {
       setMessages((m) => [
         ...m,

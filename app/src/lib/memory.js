@@ -24,19 +24,25 @@ export async function loadMemories(userId, coupleId) {
   return { own, partnerShareable };
 }
 
-// Save newly-extracted facts as the user's own PRIVATE memory (default).
+// Save newly-extracted facts. Sensitivity decides shareability automatically:
+// safe → shareable (partner can get hints), sensitive → private (never crosses).
 export async function saveMemories(userId, coupleId, facts) {
   if (!coupleId || !facts?.length) return;
   const rows = facts
     .filter((f) => f && f.content)
-    .map((f) => ({
-      owner_id: userId,
-      couple_id: coupleId,
-      content: String(f.content).slice(0, 500),
-      category: f.category || "other",
-      visibility: "private",
-      source: "ai",
-    }));
+    .map((f) => {
+      const safe = f.sensitivity === "safe";
+      return {
+        owner_id: userId,
+        couple_id: coupleId,
+        content: String(f.content).slice(0, 500),
+        attribute: f.attribute || "other",
+        category: f.attribute || "other",
+        sensitivity: safe ? "safe" : "sensitive",
+        visibility: safe ? "shareable" : "private",
+        source: "ai",
+      };
+    });
   if (rows.length) await supabase.from("memories").insert(rows);
 }
 
