@@ -70,12 +70,10 @@
 }
 
 @media (max-width: 720px) {
-  .hero-download {
-    display: none;
-  }
-
+  /* "Try on Web" stays the CTA on mobile too — the product is the web app,
+     so we keep the text button and drop the app-store glyphs. */
   .icon-ctas {
-    display: flex;
+    display: none;
   }
 }
 

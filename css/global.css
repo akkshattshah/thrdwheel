@@ -241,6 +241,14 @@ main {
   background: rgba(255, 255, 255, 0.4);
 }
 
+/* Text variant of the header pill ("Try on Web") */
+.nav-tryweb {
+  font-weight: 700;
+  font-size: 0.98rem;
+  letter-spacing: 0.01em;
+  text-transform: lowercase;
+}
+
 /* Circular hamburger (NGL-style) — hidden on desktop */
 .nav-toggle {
   display: none;
