@@ -39,3 +39,31 @@ export async function saveMemories(userId, coupleId, facts) {
     }));
   if (rows.length) await supabase.from("memories").insert(rows);
 }
+
+// ——— Memory management (the "what I remember" / consent-to-share screen) ———
+
+// All of the signed-in user's own facts, newest first (for the panel).
+export async function loadOwnMemories(userId) {
+  const { data, error } = await supabase
+    .from("memories")
+    .select("id, content, category, visibility")
+    .eq("owner_id", userId)
+    .order("created_at", { ascending: false });
+  if (error || !data) return [];
+  return data;
+}
+
+// Promote a fact to 'shareable' (or back to 'private').
+export async function setMemoryVisibility(id, visibility) {
+  const { error } = await supabase
+    .from("memories")
+    .update({ visibility })
+    .eq("id", id);
+  return !error;
+}
+
+// "Forget this about me."
+export async function deleteMemory(id) {
+  const { error } = await supabase.from("memories").delete().eq("id", id);
+  return !error;
+}

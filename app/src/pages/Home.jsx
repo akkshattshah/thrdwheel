@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase.js";
 import { loadMemories, saveMemories } from "../lib/memory.js";
 import BrandMark from "../components/BrandMark.jsx";
+import MemoryPanel from "../components/MemoryPanel.jsx";
 
 export default function Home({ session, profile, couple, onLeave }) {
   const myId = session.user.id;
@@ -16,6 +17,7 @@ export default function Home({ session, profile, couple, onLeave }) {
   ]);
   const [draft, setDraft] = useState("");
   const [typing, setTyping] = useState(false);
+  const [showMemory, setShowMemory] = useState(false);
   const scrollRef = useRef(null);
   const memoryRef = useRef({ own: [], partnerShareable: [] });
   const turnsRef = useRef(0);
@@ -149,6 +151,9 @@ export default function Home({ session, profile, couple, onLeave }) {
             </strong>
             <span>connected · private to you</span>
           </div>
+          <button className="topbar__link" onClick={() => setShowMemory(true)}>
+            memory
+          </button>
           <button className="topbar__link" onClick={signOut}>
             sign out
           </button>
@@ -208,6 +213,14 @@ export default function Home({ session, profile, couple, onLeave }) {
           unpair
         </button>
       </div>
+
+      {showMemory && (
+        <MemoryPanel
+          userId={myId}
+          partnerName={partnerName}
+          onClose={() => setShowMemory(false)}
+        />
+      )}
     </div>
   );
 }
