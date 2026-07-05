@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase.js";
 import BrandMark from "../components/BrandMark.jsx";
-import { mockReply } from "../lib/mockTherapist.js";
 
 export default function Home({ session, profile, couple, onLeave }) {
   const myId = session.user.id;
@@ -39,21 +38,49 @@ export default function Home({ session, profile, couple, onLeave }) {
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, typing]);
 
-  function send(e) {
+  async function send(e) {
     e.preventDefault();
     const text = draft.trim();
     if (!text || typing) return;
 
-    setMessages((m) => [...m, { id: `u-${Date.now()}`, role: "user", text }]);
+    const userMsg = { id: `u-${Date.now()}`, role: "user", text };
+    const next = [...messages, userMsg];
+    setMessages(next);
     setDraft("");
     setTyping(true);
 
-    const reply = mockReply(text, { partnerName });
-    const delay = 650 + Math.min(text.length * 16, 1300);
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          // Send the conversation (minus the UI-only greeting) as {role, content}.
+          messages: next
+            .filter((m) => m.id !== "greet")
+            .map((m) => ({
+              role: m.role === "user" ? "user" : "assistant",
+              content: m.text,
+            })),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      const reply =
+        res.ok && data.reply
+          ? data.reply
+          : "sorry, i'm having trouble thinking right now — give me a moment and try again.";
       setMessages((m) => [...m, { id: `a-${Date.now()}`, role: "ai", text: reply }]);
+    } catch {
+      setMessages((m) => [
+        ...m,
+        {
+          id: `a-${Date.now()}`,
+          role: "ai",
+          text: "sorry, i couldn't reach the server — check your connection and try again.",
+        },
+      ]);
+    } finally {
       setTyping(false);
-    }, delay);
+    }
   }
 
   async function signOut() {
