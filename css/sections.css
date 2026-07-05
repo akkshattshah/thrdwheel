@@ -1,0 +1,298 @@
+/* ————————————————————————————————
+   thrdwheel — snitch band, faq, join band
+   ———————————————————————————————— */
+
+/* ————— Never snitches (black band) ————— */
+.snitch h2 .grad-text {
+  background: var(--grad-chip);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.snitch-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+  max-width: 46rem;
+  margin: 3rem auto 0;
+}
+
+.snitch-card {
+  padding: 1.5rem 1.5rem 1.6rem;
+  border-radius: var(--radius-lg);
+  background: var(--black-2);
+  text-align: left;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform var(--duration-normal) var(--ease-spring);
+}
+
+.snitch-card:hover {
+  transform: rotate(0deg) scale(1.03);
+}
+
+.snitch-card.never {
+  --tilt: -2.5deg;
+}
+
+.snitch-card.always {
+  --tilt: 2.5deg;
+}
+
+.snitch-card .tag {
+  display: inline-block;
+  padding: 0.32rem 0.9rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+}
+
+.snitch-card.never .tag {
+  background: rgba(255, 88, 100, 0.16);
+  color: #ff8a92;
+}
+
+.snitch-card.always .tag {
+  background: rgba(52, 199, 89, 0.15);
+  color: #5bd97e;
+}
+
+.snitch-card blockquote {
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--white);
+}
+
+.snitch-card.never blockquote {
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 88, 100, 0.8);
+  text-decoration-thickness: 2px;
+  color: #7d7d86;
+}
+
+.snitch-card .who {
+  display: block;
+  margin-top: 0.7rem;
+  font-size: var(--text-tiny);
+  font-weight: 500;
+  color: var(--gray-on-black);
+}
+
+/* Promise pills */
+.promise-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  max-width: 40rem;
+  margin: 2.4rem auto 0;
+}
+
+.promise-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-pill);
+  background: var(--black-2);
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: #e3e4e8;
+  transition: background var(--duration-fast) ease,
+              transform var(--duration-fast) var(--ease-spring);
+}
+
+.promise-pill:hover {
+  background: var(--grad-chip);
+  transform: scale(1.05) rotate(-1deg);
+}
+
+.promise-pill svg {
+  width: 15px;
+  height: 15px;
+  color: var(--pink);
+  flex-shrink: 0;
+}
+
+.promise-pill:hover svg {
+  color: var(--white);
+}
+
+/* Snitch band stickers (band-relative) */
+.snitch .st-1 { top: 3%; right: 2%; --tilt: 12deg; }
+.snitch .st-2 { top: 56%; left: 3%; --tilt: -10deg; --drift-delay: 1.3s; }
+
+@media (max-width: 860px) {
+  .snitch .st-1 { top: 1%; right: -8%; }
+  .snitch .st-2 { top: auto; bottom: 4%; left: -5%; }
+}
+
+@media (max-width: 760px) {
+  .snitch-stage {
+    grid-template-columns: 1fr;
+    max-width: 24rem;
+  }
+}
+
+/* ————— FAQ (inside black band) ————— */
+.faq-block {
+  max-width: 40rem;
+  margin: 4.5rem auto 0;
+  text-align: left;
+}
+
+.faq-block h3 {
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 1.4rem;
+}
+
+.faq-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.faq-item {
+  border-radius: var(--radius-md);
+  background: var(--black-2);
+  overflow: hidden;
+  transition: background var(--duration-fast) ease;
+}
+
+.faq-item[open] {
+  background: var(--black-3);
+}
+
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.3rem;
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--pink);
+  transition: transform var(--duration-normal) var(--ease-out-expo);
+  flex-shrink: 0;
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-item .faq-a {
+  padding: 0 1.3rem 1.2rem;
+  font-size: var(--text-small);
+  line-height: 1.65;
+  color: var(--gray-on-black);
+}
+
+/* ————— Join band (gradient) ————— */
+.join {
+  padding-bottom: calc(var(--band-pad) + 1rem);
+}
+
+.join .band-inner {
+  position: relative;
+  max-width: 56rem;
+  margin-inline: auto;
+}
+
+/* Oversized statement headline, NGL "join the fun" scale */
+.join h2 {
+  font-size: clamp(3.2rem, 1.8rem + 7.6vw, 7.6rem);
+}
+
+.qr-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(200px, 24vw, 280px);
+  aspect-ratio: 1;
+  margin: 2.6rem auto 0;
+  padding: 18px;
+  border-radius: 34px;
+  background: var(--white);
+  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.3);
+  transform: rotate(-2deg);
+  transition: transform var(--duration-normal) var(--ease-spring);
+}
+
+.qr-card:hover {
+  transform: rotate(0deg) scale(1.04);
+}
+
+.qr-card > svg {
+  width: 100%;
+  height: 100%;
+  color: var(--ink);
+}
+
+/* Brand tile punched into the middle of the QR */
+.qr-logo {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.qr-logo svg {
+  width: 27%;
+  height: auto;
+  border-radius: 24%;
+  box-shadow: 0 0 0 6px var(--white);
+}
+
+.qr-hint {
+  margin-top: 1rem;
+  font-size: var(--text-tiny);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.join-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 1.8rem;
+}
+
+.join-fineprint {
+  margin-top: 1.5rem;
+  font-size: var(--text-tiny);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Join band stickers (band-relative, NGL-scale) */
+.join .st-1 { top: 7%; left: 6%; --tilt: -14deg; }
+.join .st-2 { top: 12%; right: 6%; --tilt: 12deg; --drift-delay: 1s; }
+.join .st-3 { bottom: -7%; left: 15%; --tilt: 8deg; --drift-delay: 2.1s; }
+.join .st-4 { bottom: 16%; right: 9%; --tilt: -10deg; --drift-delay: 0.5s; }
+
+@media (max-width: 860px) {
+  .join .st-1 { top: 4%; left: -5%; }
+  .join .st-2 { top: 6%; right: -6%; }
+  .join .st-3 { left: -4%; bottom: -4%; }
+  .join .st-4 { right: -5%; bottom: 24%; }
+}

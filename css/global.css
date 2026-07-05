@@ -1,0 +1,746 @@
+/* ————————————————————————————————
+   thrdwheel — base, bands, nav, buttons, footer
+   ———————————————————————————————— */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
+  background: var(--black);
+}
+
+body {
+  font-family: var(--font);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: var(--white);
+  background: var(--black);
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--white);
+  color: var(--pink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ————— Rounded page frame (NGL-style card inset on black) ————— */
+main {
+  display: block;
+  margin-inline: clamp(8px, 1.2vw, 16px);
+  border-radius: clamp(28px, 4vw, 48px);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ————— Curved full-bleed bands ————— */
+.band {
+  position: relative;
+  padding-block: var(--band-pad);
+  text-align: center;
+  overflow: hidden;
+}
+
+.band + .band {
+  border-radius: 50% 50% 0 0 / var(--curve) var(--curve) 0 0;
+  margin-top: calc(-1 * var(--curve));
+  padding-top: calc(var(--band-pad) + var(--curve) * 0.6);
+}
+
+.band-grad {
+  background: var(--grad);
+}
+
+.band-black {
+  background: var(--black);
+}
+
+/* “scroll for more” cue pinned near a band’s bottom */
+.scroll-cue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--curve) + 1.1rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--text-tiny);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.scroll-cue svg {
+  width: 13px;
+  height: 13px;
+  animation: cue-bob 1.6s ease-in-out infinite;
+}
+
+@keyframes cue-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ————— Top micro ticker (on the black frame, above the card) ————— */
+.ticker {
+  position: relative;
+  z-index: 5;
+  overflow: hidden;
+  padding-block: 0.7rem;
+  background: var(--black);
+}
+
+.ticker-track {
+  display: flex;
+  gap: 1.7rem;
+  width: max-content;
+  animation: ticker-scroll 26s linear infinite;
+}
+
+.ticker-track span {
+  display: flex;
+  align-items: center;
+  gap: 1.7rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--white);
+}
+
+.ticker-track i {
+  font-style: normal;
+  opacity: 0.5;
+}
+
+@keyframes ticker-scroll {
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+}
+
+/* ————— Navigation (static, sits on the hero) ————— */
+.site-nav {
+  position: relative;
+  z-index: 5;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-block: 1.7rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.2rem;
+  list-style: none;
+  padding: 0;
+  margin-inline: auto;
+}
+
+.nav-links a {
+  font-size: 1.18rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.nav-links a:hover {
+  opacity: 0.75;
+}
+
+.nav-stores {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.88);
+  color: var(--white);
+  text-decoration: none;
+  transition: transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.nav-stores:hover {
+  transform: translateY(-2px);
+}
+
+.nav-stores svg {
+  width: 22px;
+  height: 22px;
+}
+
+.nav-stores .divider {
+  width: 1.5px;
+  height: 20px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Circular hamburger (NGL-style) — hidden on desktop */
+.nav-toggle {
+  display: none;
+  width: 46px;
+  height: 46px;
+  margin-left: auto;
+  border: none;
+  border-radius: 50%;
+  background: var(--black);
+  color: var(--white);
+  cursor: pointer;
+  place-items: center;
+  position: relative;
+  z-index: 70;
+}
+
+.nav-toggle span {
+  grid-area: 1 / 1;
+  display: block;
+  width: 18px;
+  height: 2.5px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform var(--duration-normal) var(--ease-out-expo);
+}
+
+.nav-toggle span:nth-child(1) {
+  transform: translateY(-3.75px);
+}
+
+.nav-toggle span:nth-child(2) {
+  transform: translateY(3.75px);
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(2) {
+  transform: rotate(-45deg);
+}
+
+/* Outlined store pills inside the mobile menu */
+.menu-stores {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .nav-stores {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: grid;
+  }
+
+  /* Black rounded modal panel, NGL-style */
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: var(--gutter);
+    right: var(--gutter);
+    max-width: 24rem;
+    margin-inline: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1.9rem 2.2rem 2.1rem;
+    background: var(--black);
+    border-radius: 32px;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateY(-10px) scale(0.97);
+    transform-origin: top right;
+    pointer-events: none;
+    transition: opacity var(--duration-normal) var(--ease-out-expo),
+                transform var(--duration-normal) var(--ease-out-expo);
+    z-index: 60;
+  }
+
+  .nav-links.is-open {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .nav-links a {
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+    line-height: 1.2;
+  }
+
+  .menu-stores {
+    display: flex;
+    gap: 0.8rem;
+    width: 100%;
+    margin-top: 1.3rem;
+  }
+
+  .menu-store {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding: 0.85rem 0;
+    border: 2px solid var(--white);
+    border-radius: var(--radius-pill);
+    color: var(--white);
+    transition: background var(--duration-fast) ease,
+                color var(--duration-fast) ease;
+  }
+
+  .menu-store:hover {
+    background: var(--white);
+    color: var(--black);
+  }
+
+  .menu-store svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* ————— Buttons ————— */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2.1rem;
+  border-radius: var(--radius-pill);
+  border: none;
+  font-family: var(--font);
+  font-size: 1.02rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) ease;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn-white {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+}
+
+.btn-white:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+}
+
+/* Store pills */
+.store-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.72rem 1.35rem;
+  border-radius: var(--radius-pill);
+  background: var(--black);
+  color: var(--white);
+  text-decoration: none;
+  line-height: 1.12;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+  transition: transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.store-btn:hover {
+  transform: translateY(-3px);
+}
+
+.store-btn svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.store-btn small {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 500;
+  opacity: 0.72;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.store-btn strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* ————— Floating stickers ————— */
+.emoji-sticker {
+  position: absolute;
+  font-size: clamp(3.6rem, 3rem + 5vw, 7.5rem);
+  line-height: 1;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.22));
+  transform: rotate(var(--tilt, 0deg));
+  animation: sticker-drift 6s ease-in-out infinite;
+  animation-delay: var(--drift-delay, 0s);
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+/* NGL-scale statement stickers */
+.emoji-sticker.xl {
+  font-size: clamp(6.5rem, 4rem + 11vw, 14.5rem);
+  filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.26));
+}
+
+.bubble-sticker {
+  position: absolute;
+  max-width: 15rem;
+  padding: 0.85rem 1.15rem;
+  border-radius: var(--radius-md);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  box-shadow: var(--shadow-sticker);
+  transform: rotate(var(--tilt, 0deg));
+  animation: sticker-drift 7s ease-in-out infinite;
+  animation-delay: var(--drift-delay, 0s);
+  z-index: 2;
+}
+
+.bubble-sticker::after {
+  content: "";
+  position: absolute;
+  bottom: -7px;
+  left: 26px;
+  width: 15px;
+  height: 15px;
+  background: inherit;
+  border-radius: 0 0 4px 0;
+  transform: rotate(45deg);
+}
+
+.bubble-sticker.tail-right::after {
+  left: auto;
+  right: 26px;
+}
+
+.bubble-sticker.on-pink {
+  background: var(--grad-chip);
+  color: var(--white);
+}
+
+@keyframes sticker-drift {
+  0%, 100% { transform: rotate(var(--tilt, 0deg)) translateY(0); }
+  50% { transform: rotate(var(--tilt, 0deg)) translateY(-12px); }
+}
+
+@media (max-width: 860px) {
+  .emoji-sticker {
+    font-size: clamp(2.6rem, 2rem + 5vw, 4.2rem);
+  }
+
+  .emoji-sticker.xl {
+    font-size: clamp(4.8rem, 22vw, 8rem);
+  }
+
+  .bubble-sticker {
+    max-width: 11rem;
+    font-size: 0.78rem;
+  }
+
+  .hide-mobile {
+    display: none;
+  }
+}
+
+/* ————— Reveal on scroll ————— */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--duration-slow) var(--ease-out-expo),
+              transform var(--duration-slow) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ————— Footer ————— */
+.site-footer {
+  position: relative;
+  background: var(--black);
+  padding-block: 3.5rem 2rem;
+  text-align: left;
+}
+
+/* Footer joins the band stack with the same curved seam.
+   (It sits outside <main>, so .band + .band never matches it.) */
+.site-footer.band {
+  border-radius: 50% 50% 0 0 / var(--curve) var(--curve) 0 0;
+  margin-top: calc(-1 * var(--curve));
+  padding-top: calc(3rem + var(--curve));
+  padding-bottom: 2rem;
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--black-3);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+  list-style: none;
+  padding: 0;
+  margin-inline: auto;
+}
+
+.footer-links a {
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+  color: var(--white);
+  transition: color var(--duration-fast) ease;
+}
+
+.footer-links a:hover {
+  color: var(--pink);
+}
+
+.footer-social {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--black-2);
+  color: #e3e4e8;
+  transition: background var(--duration-fast) ease,
+              transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.social-btn:hover {
+  background: var(--grad-chip);
+  transform: translateY(-3px);
+}
+
+.social-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 2rem;
+  padding-top: 1.6rem;
+  font-size: var(--text-tiny);
+  color: var(--gray-on-black);
+}
+
+.footer-bottom a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-bottom a:hover {
+  color: var(--pink);
+}
+
+.footer-mini {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.4rem;
+  list-style: none;
+  padding: 0;
+  margin-inline: auto;
+}
+
+.footer-mini a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+  color: #d9d9de;
+}
+
+.footer-disclaimer {
+  margin-top: 1.5rem;
+  margin-inline: auto;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: #6f6f78;
+  max-width: 56rem;
+  text-align: center;
+}
+
+/* NGL-style centered footer stack on mobile */
+@media (max-width: 720px) {
+  .site-footer.band {
+    padding-top: calc(3.8rem + var(--curve));
+    text-align: center;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.4rem;
+    border-bottom: none;
+    padding-bottom: 2.6rem;
+  }
+
+  .footer-links {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1.6rem 3.4rem;
+    justify-content: center;
+    margin-inline: 0;
+  }
+
+  .footer-links a {
+    font-size: 1.35rem;
+    font-weight: 800;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.9rem;
+    padding-top: 0;
+  }
+
+  .footer-bottom > a {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .footer-mini {
+    margin-inline: 0;
+    gap: 1rem 1.8rem;
+  }
+
+  .footer-mini a {
+    font-size: 1rem;
+  }
+
+  .footer-copy {
+    margin-left: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #d9d9de;
+  }
+
+  .footer-disclaimer {
+    margin-top: 2.2rem;
+    text-align: center;
+    margin-inline: auto;
+  }
+}
+
+/* ————— Reduced motion ————— */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

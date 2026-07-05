@@ -1,0 +1,456 @@
+/* ————————————————————————————————
+   thrdwheel — hero band + phone demo band
+   ———————————————————————————————— */
+
+/* ————— Hero ————— */
+.hero {
+  display: flex;
+  flex-direction: column;
+  min-height: min(96svh, 66rem);
+  padding-top: 0;
+  padding-bottom: calc(var(--band-pad) + 1rem);
+}
+
+.hero-inner {
+  position: relative;
+  max-width: 56rem;
+  margin-block: auto;
+  margin-inline: auto;
+  padding-top: clamp(3rem, 2rem + 4vw, 5.5rem);
+}
+
+.hero h1 {
+  font-size: var(--text-hero);
+  animation: pop-in 0.7s var(--ease-spring) both;
+}
+
+.hero-sub {
+  margin: 1.4rem auto 0;
+  font-size: var(--text-lead);
+  font-weight: 500;
+  max-width: 27rem;
+  color: rgba(255, 255, 255, 0.95);
+  animation: pop-in 0.7s var(--ease-spring) 0.1s both;
+}
+
+.hero-cta {
+  margin-top: 2.2rem;
+  animation: pop-in 0.7s var(--ease-spring) 0.2s both;
+}
+
+/* NGL-style icon pills — replace the text CTA on mobile */
+.icon-ctas {
+  display: none;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.icon-pill {
+  display: grid;
+  place-items: center;
+  padding: 1.05rem 2.4rem;
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--pink);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.icon-pill:active {
+  transform: scale(0.95);
+}
+
+.icon-pill:hover {
+  transform: translateY(-3px);
+}
+
+.icon-pill svg {
+  width: 30px;
+  height: 30px;
+}
+
+@media (max-width: 720px) {
+  .hero-download {
+    display: none;
+  }
+
+  .icon-ctas {
+    display: flex;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Hero sticker positions (band-relative, bleeding off edges) */
+.hero .st-1 { top: 13%; left: 2%; --tilt: -12deg; }
+.hero .st-2 { top: 11%; right: -1%; --tilt: 14deg; --drift-delay: 1.2s; }
+.hero .st-3 { bottom: 20%; left: 14%; --tilt: 8deg; --drift-delay: 2s; }
+.hero .st-4 { bottom: 11%; right: 9%; --tilt: -7deg; --drift-delay: 0.6s; }
+
+.hero .bb-1 { top: 56%; left: 5%; --tilt: -6deg; --drift-delay: 1.6s; }
+.hero .bb-2 { top: 60%; right: 4%; --tilt: 5deg; --drift-delay: 0.4s; }
+
+@media (max-width: 860px) {
+  /* Zoned layout: sticker cluster on top, text in the middle, nothing overlaps */
+  .hero {
+    min-height: 100svh;
+  }
+
+  .hero-inner {
+    padding-top: clamp(10rem, 34vw, 13rem);
+  }
+
+  .hero-sub {
+    margin-top: 1.6rem;
+    font-size: 1.12rem;
+    max-width: 24rem;
+  }
+
+  .hero-cta {
+    margin-top: 2.8rem;
+  }
+
+  /* Dense sticker cluster in the top zone, NGL-style */
+  .hero .st-1 { top: 6%; left: -7%; }
+  .hero .st-2 { top: 5%; right: -8%; }
+  .hero .st-3 { bottom: 21%; left: 6%; }
+  .hero .st-4 { bottom: 23%; right: 6%; }
+  .hero .bb-1 { top: 12%; left: 9%; }
+  .hero .bb-2 { top: 16%; right: 6%; }
+
+  .hero .bubble-sticker {
+    max-width: 13rem;
+    font-size: 0.92rem;
+    padding: 0.95rem 1.2rem;
+  }
+
+  .icon-pill {
+    padding: 1.2rem 2.7rem;
+  }
+
+  .icon-pill svg {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* ————— List band (black): what it's there for ————— */
+.mode-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 2rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.mode-list li {
+  font-size: var(--text-list);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  line-height: 1.15;
+}
+
+.mode-list li:nth-child(odd):hover {
+  color: var(--pink);
+}
+
+.mode-list li:nth-child(even):hover {
+  color: var(--coral);
+}
+
+.band-black .band-inner {
+  position: relative;
+  max-width: 56rem;
+  margin-inline: auto;
+}
+
+/* List band sticker positions (band-relative) */
+.modes .st-1 { top: -7%; right: -2%; --tilt: 12deg; }
+.modes .st-2 { bottom: 12%; left: 7%; --tilt: -12deg; --drift-delay: 1.4s; }
+.modes .bb-1 { top: 36%; left: 7%; --tilt: -7deg; --drift-delay: 0.8s; }
+.modes .bb-2 { top: 58%; right: 6%; --tilt: 6deg; --drift-delay: 2.2s; }
+
+@media (max-width: 860px) {
+  .modes .st-1 { top: -3%; right: -10%; }
+  .modes .st-2 { bottom: 6%; left: -3%; }
+  .modes .bb-1 { display: none; }
+  .modes .bb-2 { top: auto; bottom: 5%; right: 3%; }
+}
+
+/* ————— Band headings ————— */
+.band h2 {
+  font-size: var(--text-h2);
+}
+
+.band .lede {
+  margin: 1.2rem auto 0;
+  font-size: var(--text-lead);
+  font-weight: 500;
+  max-width: 30rem;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.band-black .lede {
+  color: var(--gray-on-black);
+}
+
+/* ————— Phone demo (gradient band) ————— */
+.phone-stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  max-width: 40rem;
+  margin: 2.6rem auto 0;
+}
+
+.phone-tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 1.6rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-pill);
+}
+
+.phone-tab {
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font-family: var(--font);
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: background var(--duration-fast) ease,
+              color var(--duration-fast) ease;
+}
+
+.phone-tab[aria-selected="true"] {
+  background: var(--white);
+  color: var(--ink);
+}
+
+.phone {
+  position: relative;
+  width: min(320px, 82vw);
+  aspect-ratio: 9 / 18.4;
+  border-radius: 48px;
+  background: var(--ink);
+  padding: 10px;
+  box-shadow: var(--shadow-phone);
+}
+
+.phone-screen {
+  position: relative;
+  height: 100%;
+  border-radius: 40px;
+  overflow: hidden;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  color: var(--ink);
+}
+
+.phone-notch {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32%;
+  height: 21px;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  z-index: 3;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 2.9rem 1.1rem 0.75rem;
+  border-bottom: 1px solid #ececef;
+}
+
+.chat-header .ai-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--grad-chip);
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.chat-header .ai-avatar svg {
+  width: 18px;
+  height: 18px;
+}
+
+.chat-header b {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chat-header small {
+  display: flex;
+  align-items: center;
+  gap: 0.32rem;
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: #7a7a83;
+}
+
+.chat-header small::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34c759;
+}
+
+.chat-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  padding: 1rem 0.9rem 0.9rem;
+}
+
+.chat-note {
+  align-self: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #7a7a83;
+  background: #f3f3f5;
+  padding: 0.32rem 0.8rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.4rem;
+}
+
+.msg {
+  max-width: 84%;
+  padding: 0.64rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.42;
+  border-radius: 19px;
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
+  animation: msg-in 0.5s var(--ease-spring) forwards;
+  animation-delay: var(--msg-delay, 0ms);
+}
+
+.msg.from-user {
+  align-self: flex-end;
+  background: var(--grad-chip);
+  color: var(--white);
+  border-bottom-right-radius: 6px;
+}
+
+.msg.from-ai {
+  align-self: flex-start;
+  background: #f1f2f4;
+  color: var(--ink);
+  border-bottom-left-radius: 6px;
+}
+
+.msg.typing {
+  display: inline-flex;
+  gap: 5px;
+  padding: 0.85rem 0.95rem;
+}
+
+.msg.typing i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c3c6cc;
+  animation: typing-bounce 1.2s ease-in-out infinite;
+}
+
+.msg.typing i:nth-child(2) { animation-delay: 0.15s; }
+.msg.typing i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes msg-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-5px); background: var(--pink); }
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0.9rem 1rem;
+  padding: 0.55rem 0.6rem 0.55rem 1rem;
+  border-radius: var(--radius-pill);
+  background: #f3f3f5;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #7a7a83;
+}
+
+.chat-input .send {
+  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--grad-chip);
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.chat-input .send svg {
+  width: 14px;
+  height: 14px;
+}
+
+.phone-caption {
+  margin-top: 1.6rem;
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Phone band stickers (band-relative) */
+.doors .st-1 { top: 12%; left: 4%; --tilt: -9deg; }
+.doors .st-2 { bottom: 22%; right: 8%; --tilt: 10deg; --drift-delay: 1.5s; }
+.doors .bb-1 { top: 42%; left: 9%; --tilt: -6deg; --drift-delay: 0.7s; }
+.doors .bb-2 { top: 60%; right: 8%; --tilt: 7deg; --drift-delay: 2s; }
+
+.doors .band-inner {
+  position: relative;
+}
+
+@media (max-width: 860px) {
+  .doors .st-1 { top: 7%; left: -5%; }
+  .doors .st-2 { bottom: 12%; right: 2%; }
+  .doors .bb-1 { display: none; }
+  .doors .bb-2 { top: auto; bottom: 24%; right: 2%; }
+}

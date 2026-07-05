@@ -1,0 +1,10 @@
+# Local Claude Code settings (machine-specific)
+.claude/
+
+# macOS
+.DS_Store
+
+# Editor / OS cruft
+*.swp
+.idea/
+.vscode/
