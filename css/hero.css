@@ -118,8 +118,8 @@
   }
 
   /* Dense sticker cluster in the top zone, NGL-style */
-  .hero .st-1 { top: 6%; left: -7%; }
-  .hero .st-2 { top: 5%; right: -8%; }
+  .hero .st-1 { top: 6%; left: 2%; }
+  .hero .st-2 { top: 5%; right: 2%; }
   .hero .st-3 { bottom: 21%; left: 6%; }
   .hero .st-4 { bottom: 23%; right: 6%; }
   .hero .bb-1 { top: 12%; left: 9%; }
@@ -179,8 +179,8 @@
 .modes .bb-2 { top: 58%; right: 6%; --tilt: 6deg; --drift-delay: 2.2s; }
 
 @media (max-width: 860px) {
-  .modes .st-1 { top: -3%; right: -10%; }
-  .modes .st-2 { bottom: 6%; left: -3%; }
+  .modes .st-1 { top: 2%; right: 2%; }
+  .modes .st-2 { bottom: 6%; left: 2%; }
   .modes .bb-1 { display: none; }
   .modes .bb-2 { top: auto; bottom: 5%; right: 3%; }
 }
@@ -447,7 +447,7 @@
 }
 
 @media (max-width: 860px) {
-  .doors .st-1 { top: 7%; left: -5%; }
+  .doors .st-1 { top: 7%; left: 2%; }
   .doors .st-2 { bottom: 12%; right: 2%; }
   .doors .bb-1 { display: none; }
   .doors .bb-2 { top: auto; bottom: 24%; right: 2%; }

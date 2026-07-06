@@ -128,8 +128,8 @@
 .snitch .st-2 { top: 56%; left: 3%; --tilt: -10deg; --drift-delay: 1.3s; }
 
 @media (max-width: 860px) {
-  .snitch .st-1 { top: 1%; right: -8%; }
-  .snitch .st-2 { top: auto; bottom: 4%; left: -5%; }
+  .snitch .st-1 { top: 1%; right: 2%; }
+  .snitch .st-2 { top: auto; bottom: 4%; left: 2%; }
 }
 
 @media (max-width: 760px) {
@@ -291,8 +291,8 @@
 .join .st-4 { bottom: 16%; right: 9%; --tilt: -10deg; --drift-delay: 0.5s; }
 
 @media (max-width: 860px) {
-  .join .st-1 { top: 4%; left: -5%; }
-  .join .st-2 { top: 6%; right: -6%; }
-  .join .st-3 { left: -4%; bottom: -4%; }
-  .join .st-4 { right: -5%; bottom: 24%; }
+  .join .st-1 { top: 4%; left: 2%; }
+  .join .st-2 { top: 6%; right: 2%; }
+  .join .st-3 { left: 3%; bottom: 1%; }
+  .join .st-4 { right: 2%; bottom: 24%; }
 }

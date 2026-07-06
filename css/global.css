@@ -480,6 +480,16 @@ main {
   filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.26));
 }
 
+/* Bigger, more visible stickers on phones */
+@media (max-width: 860px) {
+  .emoji-sticker {
+    font-size: clamp(5rem, 16vw, 7rem);
+  }
+  .emoji-sticker.xl {
+    font-size: clamp(8rem, 26vw, 11rem);
+  }
+}
+
 /* Fluent (Windows-style) emoji images — consistent on every device */
 img.femoji {
   height: 1em;
