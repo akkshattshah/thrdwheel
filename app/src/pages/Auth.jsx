@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabase.js";
-import BrandMark from "../components/BrandMark.jsx";
 
 export default function Auth() {
   const [mode, setMode] = useState("signup"); // "signup" | "login"
@@ -57,10 +56,10 @@ export default function Auth() {
   return (
     <div className="shell">
       <div className="card">
+        <img className="auth-logo" src="/thrdwheel_white.png" alt="thrdwheel" />
         <div className="screen center">
           <div className="stack">
             <div style={{ textAlign: "center", marginBottom: "1.6rem" }}>
-              <BrandMark />
               <h1 className="headline" style={{ marginTop: "1.2rem" }}>
                 {isSignup ? "make it three." : "welcome back."}
               </h1>

@@ -108,6 +108,14 @@ a {
   width: 1.2em;
   height: 1.2em;
 }
+.auth-logo {
+  position: absolute;
+  top: clamp(1rem, 3vw, 2rem);
+  left: clamp(1rem, 3vw, 2rem);
+  height: clamp(90px, 14vw, 150px);
+  width: auto;
+  z-index: 10;
+}
 
 /* ——— Type ——— */
 .headline {
