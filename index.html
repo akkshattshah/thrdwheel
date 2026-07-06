@@ -110,6 +110,7 @@
               <li><a href="#doors">About</a></li>
               <li><a href="#snitch">Privacy</a></li>
               <li><a href="#faq">FAQ</a></li>
+              <li><a href="pricing.html">Pricing</a></li>
               <li><a href="mailto:hello@thrdwheel.app">Contact us</a></li>
               <li class="menu-stores">
                 <a class="menu-store" href="https://thrdwheel.pages.dev">Try on Web</a>
@@ -347,6 +348,7 @@
           <li><a href="#doors">About</a></li>
           <li><a href="#snitch">Privacy</a></li>
           <li><a href="#faq">FAQ</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
           <li><a href="mailto:hello@thrdwheel.app">Contact us</a></li>
         </ul>
 
@@ -381,5 +383,18 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <!-- Consistent Windows-style (Fluent) emoji on every device -->
+  <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@15.1.0/dist/twemoji.min.js" crossorigin="anonymous"></script>
+  <script>
+    (function () {
+      if (!window.twemoji) return;
+      twemoji.parse(document.body, {
+        className: 'femoji',
+        callback: function (icon) {
+          return 'https://cdn.jsdelivr.net/gh/shuding/fluentui-emoji-unicode/assets/' + icon + '_3d.png';
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

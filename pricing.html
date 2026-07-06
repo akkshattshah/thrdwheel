@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing — thrdwheel</title>
+  <meta name="description" content="thrdwheel pricing — one subscription covers both of you. Start free, or go all in." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" />
+
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="css/sections.css" />
+  <link rel="stylesheet" href="css/pricing.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff2d7e' d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- Icon sprite (footer social) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-instagram" viewBox="0 0 24 24">
+      <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="2" />
+      <path fill="none" stroke="currentColor" stroke-width="2" d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <path stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M17.5 6.5h.01" />
+    </symbol>
+    <symbol id="i-tiktok" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.3 0 .58.04.86.13v-3.5a6.37 6.37 0 0 0-5.94 10.66 6.37 6.37 0 0 0 10.98-4.4V9.07a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-.56-.5z" />
+    </symbol>
+    <symbol id="i-x" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.67l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z" />
+    </symbol>
+  </svg>
+
+  <!-- micro ticker -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>
+        one subscription <i>•</i> two people <i>•</i> cancel anytime <i>•</i>
+        14-day free trial <i>•</i> no snitching, ever <i>•</i> you choose what's shared <i>•</i>
+      </span>
+      <span>
+        one subscription <i>•</i> two people <i>•</i> cancel anytime <i>•</i>
+        14-day free trial <i>•</i> no snitching, ever <i>•</i> you choose what's shared <i>•</i>
+      </span>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="band band-grad pricing-band" aria-labelledby="pricing-heading">
+      <!-- nav -->
+      <header class="site-nav">
+        <div class="container nav-inner">
+          <a class="brand" href="index.html" aria-label="thrdwheel home">
+            <img class="brand-logo" src="thrdwheel_white.png" alt="thrdwheel" />
+          </a>
+
+          <nav aria-label="Main navigation" style="display: contents">
+            <ul class="nav-links" id="nav-links">
+              <li><a href="index.html#doors">About</a></li>
+              <li><a href="index.html#snitch">Privacy</a></li>
+              <li><a href="index.html#faq">FAQ</a></li>
+              <li><a href="pricing.html" aria-current="page">Pricing</a></li>
+              <li><a href="mailto:hello@thrdwheel.app">Contact us</a></li>
+              <li class="menu-stores">
+                <a class="menu-store" href="https://thrdwheel.pages.dev">Try on Web</a>
+              </li>
+            </ul>
+          </nav>
+
+          <a class="nav-stores nav-tryweb" href="https://thrdwheel.pages.dev">Try on Web</a>
+
+          <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+            <span></span><span></span>
+          </button>
+        </div>
+      </header>
+
+      <div class="container pricing-inner">
+        <div class="pricing-head">
+          <h1 id="pricing-heading">one price, two people.</h1>
+          <p>one subscription covers you both. start free, upgrade when you're ready.</p>
+        </div>
+
+        <div class="billing-toggle" role="group" aria-label="Billing period">
+          <button type="button" data-billing="monthly" class="is-active">monthly</button>
+          <button type="button" data-billing="yearly">yearly</button>
+        </div>
+
+        <div class="price-cards billing-monthly" id="price-cards">
+          <!-- Free -->
+          <article class="price-card">
+            <div class="price-name">free</div>
+            <p class="price-tagline">just curious</p>
+            <div class="price"><span class="amount">$0</span><span class="per">/forever</span></div>
+            <p class="price-note">no card needed</p>
+            <ul class="price-features">
+              <li>your shared AI, for two</li>
+              <li>a few heart-to-hearts a day</li>
+              <li>private on each side, always</li>
+            </ul>
+            <a class="price-cta" href="https://thrdwheel.pages.dev">start free</a>
+          </article>
+
+          <!-- Together (featured) -->
+          <article class="price-card price-card--featured">
+            <span class="price-badge">most popular</span>
+            <div class="price-name">together</div>
+            <p class="price-tagline">the real thing</p>
+            <div class="price price-monthly"><span class="amount">$15</span><span class="per">/month</span></div>
+            <div class="price price-yearly"><span class="amount">$99</span><span class="per">/year</span></div>
+            <p class="price-note price-note-monthly">billed monthly</p>
+            <p class="price-note price-note-yearly">$99 billed yearly · save 45%</p>
+            <ul class="price-features">
+              <li>unlimited conversations</li>
+              <li>remembers what matters to each of you</li>
+              <li>gift &amp; surprise hints</li>
+              <li>one plan covers you both</li>
+            </ul>
+            <a class="price-cta" href="https://thrdwheel.pages.dev">go together</a>
+          </article>
+
+          <!-- Forever -->
+          <article class="price-card">
+            <div class="price-name">forever</div>
+            <p class="price-tagline">all in</p>
+            <div class="price price-monthly"><span class="amount">$20</span><span class="per">/month</span></div>
+            <div class="price price-yearly"><span class="amount">$200</span><span class="per">/year</span></div>
+            <p class="price-note price-note-monthly">billed monthly</p>
+            <p class="price-note price-note-yearly">$200 billed yearly · save 17%</p>
+            <ul class="price-features">
+              <li>everything in together</li>
+              <li>deeper relationship insights</li>
+              <li>weekly check-ins</li>
+              <li>priority replies + early access</li>
+            </ul>
+            <a class="price-cta" href="https://thrdwheel.pages.dev">go all in</a>
+          </article>
+        </div>
+
+        <p class="pricing-fineprint">14-day free trial · cancel anytime · it never snitches</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer band band-black">
+    <div class="container">
+      <div class="footer-top">
+        <a class="brand" href="index.html">
+          <img class="footer-logo" src="thrdwheel.png" alt="thrdwheel" />
+        </a>
+
+        <ul class="footer-links">
+          <li><a href="index.html#doors">About</a></li>
+          <li><a href="index.html#snitch">Privacy</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="mailto:hello@thrdwheel.app">Contact us</a></li>
+        </ul>
+
+        <div class="footer-social">
+          <a class="social-btn" href="#" aria-label="thrdwheel on Instagram">
+            <svg aria-hidden="true"><use href="#i-instagram" /></svg>
+          </a>
+          <a class="social-btn" href="#" aria-label="thrdwheel on TikTok">
+            <svg aria-hidden="true"><use href="#i-tiktok" /></svg>
+          </a>
+          <a class="social-btn" href="#" aria-label="thrdwheel on X">
+            <svg aria-hidden="true"><use href="#i-x" /></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <a href="mailto:hello@thrdwheel.app">hello@thrdwheel.app</a>
+        <ul class="footer-mini">
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+        <span class="footer-copy">© <span id="year">2026</span> Antilayers Pvt. Ltd. · made with 🤍</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function () {
+      var grid = document.getElementById('price-cards');
+      var btns = document.querySelectorAll('.billing-toggle button');
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () {
+          btns.forEach(function (x) { x.classList.remove('is-active'); });
+          b.classList.add('is-active');
+          grid.classList.remove('billing-monthly', 'billing-yearly');
+          grid.classList.add('billing-' + b.dataset.billing);
+        });
+      });
+    })();
+  </script>
+  <!-- Consistent Windows-style (Fluent) emoji on every device -->
+  <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@15.1.0/dist/twemoji.min.js" crossorigin="anonymous"></script>
+  <script>
+    (function () {
+      if (!window.twemoji) return;
+      twemoji.parse(document.body, {
+        className: 'femoji',
+        callback: function (icon) {
+          return 'https://cdn.jsdelivr.net/gh/shuding/fluentui-emoji-unicode/assets/' + icon + '_3d.png';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

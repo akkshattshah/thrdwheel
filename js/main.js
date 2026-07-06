@@ -6,9 +6,11 @@
 
   /* ————— Nav scrolled state ————— */
   const nav = document.querySelector('.site-nav');
-  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 12);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  if (nav) {
+    const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 12);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
 
   /* ————— Mobile menu (only if a toggle exists) ————— */
   const navToggle = document.querySelector('.nav-toggle');
@@ -105,18 +107,20 @@
   let userTookOver = false;
   let cycleTimer = null;
 
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => selectTab(tab, { fromUser: true }));
-  });
+  if (chatBody && tabs.length) {
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => selectTab(tab, { fromUser: true }));
+    });
 
-  renderConversation('maya');
+    renderConversation('maya');
 
-  if (!prefersReducedMotion) {
-    cycleTimer = setInterval(() => {
-      if (userTookOver) return;
-      const current = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
-      selectTab(tabs[(current + 1) % tabs.length]);
-    }, AUTO_CYCLE_MS);
+    if (!prefersReducedMotion) {
+      cycleTimer = setInterval(() => {
+        if (userTookOver) return;
+        const current = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+        selectTab(tabs[(current + 1) % tabs.length]);
+      }, AUTO_CYCLE_MS);
+    }
   }
 
   /* ————— FAQ: keep one answer open at a time ————— */
