@@ -172,23 +172,25 @@ export default function Home({ session, profile, couple, onLeave }) {
 
         <div className="chat">
           <div className="chat__scroll" ref={scrollRef}>
-            <div className="chat__note">
-              🔒 private to you · never shared with {partnerName}
+            <div className="chat__thread">
+              <div className="chat__note">
+                🔒 private to you · never shared with {partnerName}
+              </div>
+
+              {messages.map((m) => (
+                <div key={m.id} className={`msg msg--${m.role}`}>
+                  {m.text}
+                </div>
+              ))}
+
+              {typing && (
+                <div className="msg msg--ai typing">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              )}
             </div>
-
-            {messages.map((m) => (
-              <div key={m.id} className={`msg msg--${m.role}`}>
-                {m.text}
-              </div>
-            ))}
-
-            {typing && (
-              <div className="msg msg--ai typing">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            )}
           </div>
 
           <form className="chat__input" onSubmit={send}>
