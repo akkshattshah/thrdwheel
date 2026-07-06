@@ -1,0 +1,143 @@
+/* ————————————————————————————————
+   thrdwheel — legal pages (terms, privacy)
+   Long-form, readable, high-contrast.
+   ———————————————————————————————— */
+.legal-band {
+  padding-block: clamp(1rem, 2vw, 1.6rem) clamp(3rem, 6vw, 5rem);
+  text-align: left;
+}
+
+.legal {
+  max-width: 46rem;
+  margin-inline: auto;
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+  color: #e6e6ea;
+  line-height: 1.72;
+  font-size: 1.02rem;
+}
+
+.legal h1 {
+  font-size: clamp(2.4rem, 1.6rem + 3vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: #fff;
+  text-transform: lowercase;
+  margin-bottom: 0.35rem;
+}
+
+.legal-updated {
+  color: var(--gray-on-black);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1.6rem;
+}
+
+.legal h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+  margin: 2.6rem 0 0.7rem;
+  scroll-margin-top: 1.5rem;
+}
+.legal h3 {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 1.5rem 0 0.4rem;
+}
+
+.legal p {
+  margin: 0 0 1rem;
+}
+.legal ul,
+.legal ol {
+  margin: 0 0 1rem;
+  padding-left: 1.35rem;
+}
+.legal li {
+  margin-bottom: 0.5rem;
+}
+.legal a {
+  color: var(--pink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* "The short version" summary */
+.legal-summary {
+  background: var(--black-2);
+  border: 1px solid var(--black-3);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.6rem;
+  margin: 1.8rem 0 2.6rem;
+}
+.legal-summary h2 {
+  margin: 0 0 0.7rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--pink);
+}
+.legal-summary ul {
+  margin: 0;
+}
+.legal-summary li {
+  margin-bottom: 0.4rem;
+}
+
+/* Important callout (crisis / medical disclaimer) */
+.legal-callout {
+  background: rgba(255, 45, 126, 0.09);
+  border: 1px solid rgba(255, 45, 126, 0.42);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.4rem;
+  margin: 1.5rem 0;
+}
+.legal-callout strong {
+  color: #ff9dc4;
+}
+
+/* Table of contents */
+.legal-toc {
+  margin: 1.8rem 0 2.6rem;
+  padding: 1.2rem 1.5rem;
+  background: var(--black-2);
+  border: 1px solid var(--black-3);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+}
+.legal-toc strong {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.legal-toc ol {
+  margin: 0;
+  padding-left: 1.3rem;
+  columns: 2;
+  column-gap: 1.6rem;
+}
+.legal-toc a {
+  color: #cfcfd6;
+  text-decoration: none;
+}
+.legal-toc a:hover {
+  color: var(--pink);
+}
+
+/* Placeholder markers for details you must fill in before publishing */
+.legal .fill {
+  color: #ffd166;
+  font-weight: 700;
+}
+
+@media (max-width: 620px) {
+  .legal-toc ol {
+    columns: 1;
+  }
+}
