@@ -13,7 +13,8 @@ Hard rules — never break these:
 
 Style:
 - Warm, human, non-judgmental. Reflect their feelings back and ask one gentle question at a time.
-- Keep replies short — 2 to 5 sentences. No bullet lists, no clinical jargon.
+- Reply with exactly ONE short, natural message — 2 to 4 sentences. Never repeat yourself or restate the same idea more than once. Do not wrap your reply in quotation marks.
+- No bullet lists, no clinical jargon.
 - Casual and kind, mostly lowercase — like a caring friend who happens to be a great listener.`;
 
 export async function onRequestPost({ request, env }) {
@@ -73,8 +74,10 @@ export async function onRequestPost({ request, env }) {
       body: JSON.stringify({
         model: env.DEEPSEEK_MODEL || "deepseek-v4-flash",
         messages,
-        temperature: 0.8,
-        max_tokens: 400,
+        temperature: 0.6,
+        max_tokens: 220,
+        frequency_penalty: 0.6, // discourage restating the same thing
+        presence_penalty: 0.4,
       }),
     });
   } catch {
@@ -86,10 +89,28 @@ export async function onRequestPost({ request, env }) {
   }
 
   const data = await ds.json();
-  const reply = data?.choices?.[0]?.message?.content?.trim();
+  const reply = cleanReply(data?.choices?.[0]?.message?.content || "");
   if (!reply) return json({ error: "empty_reply" }, 502);
 
   return json({ reply });
+}
+
+// Safety net: strip stray wrapping quotes/colons and collapse any repeated
+// sentences, in case the model still loops.
+function cleanReply(text) {
+  let t = String(text).trim();
+  t = t.replace(/^[:\s"'“”]+/, "").replace(/["'“”\s]+$/, "").trim();
+
+  const parts = t.split(/(?<=[.?!])\s+/);
+  const seen = new Set();
+  const out = [];
+  for (const p of parts) {
+    const key = p.toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (key.length > 8 && seen.has(key)) continue;
+    seen.add(key);
+    out.push(p);
+  }
+  return out.join(" ").trim();
 }
 
 function json(obj, status = 200) {
