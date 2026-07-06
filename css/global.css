@@ -193,6 +193,18 @@ main {
   flex-shrink: 0;
 }
 
+.brand-logo {
+  height: clamp(84px, 9.75vw, 132px);
+  width: auto;
+  display: block;
+}
+
+.footer-logo {
+  height: 130px;
+  width: auto;
+  display: block;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
