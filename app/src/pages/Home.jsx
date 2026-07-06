@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase.js";
 import { loadMemories, saveMemories } from "../lib/memory.js";
 import { loadHistory, saveMessage } from "../lib/messages.js";
-import BrandMark from "../components/BrandMark.jsx";
 import MemoryPanel from "../components/MemoryPanel.jsx";
 
 export default function Home({ session, profile, couple, onLeave }) {
@@ -19,6 +18,7 @@ export default function Home({ session, profile, couple, onLeave }) {
   const [draft, setDraft] = useState("");
   const [typing, setTyping] = useState(false);
   const [showMemory, setShowMemory] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const scrollRef = useRef(null);
   const memoryRef = useRef({ own: [], partnerShareable: [] });
 
@@ -152,22 +152,62 @@ export default function Home({ session, profile, couple, onLeave }) {
   }
 
   return (
-    <div className="shell">
-      <div className="card card--dark on-dark">
+    <div className="shell shell--flush">
+      <div className="card card--dark card--flush on-dark">
         <div className="chat-header">
-          <BrandMark showName={false} />
-          <div className="chat-header__meta">
-            <strong>
-              {myName} &amp; {partnerName}
-            </strong>
-            <span>connected · private to you</span>
+          <img className="chat-header__logo" src="/thrdwheel.png" alt="thrdwheel" />
+          <div className="nav">
+            <button
+              className="nav-btn"
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label="menu"
+              aria-expanded={menuOpen}
+            >
+              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  d="M4 7h16M4 12h16M4 17h16"
+                />
+              </svg>
+            </button>
+            {menuOpen && (
+              <>
+                <div className="nav-backdrop" onClick={() => setMenuOpen(false)} />
+                <div className="nav-menu">
+                  <button
+                    className="nav-item"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      setShowMemory(true);
+                    }}
+                  >
+                    memory
+                  </button>
+                  <button
+                    className="nav-item"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      signOut();
+                    }}
+                  >
+                    sign out
+                  </button>
+                  <button
+                    className="nav-item nav-item--danger"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      unpair();
+                    }}
+                  >
+                    breakup
+                  </button>
+                </div>
+              </>
+            )}
           </div>
-          <button className="topbar__link" onClick={() => setShowMemory(true)}>
-            memory
-          </button>
-          <button className="topbar__link" onClick={signOut}>
-            sign out
-          </button>
         </div>
 
         <div className="chat">
@@ -222,9 +262,6 @@ export default function Home({ session, profile, couple, onLeave }) {
           </form>
         </div>
 
-        <button className="unpair-link" onClick={unpair}>
-          unpair
-        </button>
       </div>
 
       {showMemory && (
