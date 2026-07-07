@@ -80,10 +80,13 @@ a {
   display: flex;
   flex-direction: column;
   padding: var(--gutter);
+  overflow-y: auto; /* scroll when content is taller than the card */
 }
 
 .center {
-  justify-content: center;
+  /* "safe" so tall content starts at the top and can scroll, instead of
+     centering and clipping the ends */
+  justify-content: safe center;
   align-items: center;
 }
 
@@ -298,6 +301,11 @@ a {
   justify-content: space-between;
   padding: var(--gutter);
   padding-bottom: 0;
+}
+.topbar__logo {
+  height: 44px;
+  width: auto;
+  display: block;
 }
 .topbar__link {
   font-size: var(--text-small);

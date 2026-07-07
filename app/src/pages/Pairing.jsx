@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase.js";
-import BrandMark from "../components/BrandMark.jsx";
 
 export default function Pairing({ profile, couple, onChange }) {
   // If a pending invite already exists, resume the waiting screen.
@@ -358,7 +357,7 @@ function useWaitForPartner(code, onPaired) {
 function TopBar({ name, onSignOut }) {
   return (
     <div className="topbar">
-      <BrandMark />
+      <img className="topbar__logo" src="/thrdwheel_white.png" alt="thrdwheel" />
       <button className="topbar__link" onClick={onSignOut}>
         {name} · sign out
       </button>
