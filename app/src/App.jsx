@@ -3,6 +3,7 @@ import { supabase } from "./lib/supabase.js";
 import Auth from "./pages/Auth.jsx";
 import Pairing from "./pages/Pairing.jsx";
 import Home from "./pages/Home.jsx";
+import AcceptInvite from "./pages/AcceptInvite.jsx";
 
 function Loader() {
   return (
@@ -133,6 +134,13 @@ export default function App() {
     return (
       <Home session={session} profile={profile} couple={couple} onLeave={refresh} />
     );
+  }
+
+  // Arrived from an email invite link (?invite=CODE) and not yet paired →
+  // set a password and auto-join, instead of the normal pairing screen.
+  const inviteCode = new URLSearchParams(window.location.search).get("invite");
+  if (inviteCode) {
+    return <AcceptInvite code={inviteCode} onDone={refresh} />;
   }
 
   return (

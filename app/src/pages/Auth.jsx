@@ -29,13 +29,17 @@ export default function Auth() {
         const { data, error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
-          options: { data: { name: name.trim() } },
+          options: {
+            data: { name: name.trim() },
+            // The confirmation link brings them right back here, already signed in.
+            emailRedirectTo: window.location.origin,
+          },
         });
         if (error) throw error;
         // If email confirmation is on, there's no session yet.
         if (!data.session) {
           setNotice(
-            "Check your email to confirm your account, then come back and log in."
+            "Almost there! Check your email and tap the confirmation link — it brings you right back, already signed in."
           );
         }
         // Otherwise App picks up the new session automatically.

@@ -11,6 +11,9 @@ export default function Pairing({ profile, couple, onChange }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [partnerEmail, setPartnerEmail] = useState("");
+  const [partnerName, setPartnerName] = useState("");
+  const [notice, setNotice] = useState("");
 
   const firstName = (profile?.name || "you").split(" ")[0];
 
@@ -29,6 +32,42 @@ export default function Pairing({ profile, couple, onChange }) {
       setCode(data);
       setView("waiting");
     }
+    setBusy(false);
+  }
+
+  // ——— Invite partner by email (magic-link, carries the pairing code) ———
+  async function invitePartner(e) {
+    e.preventDefault();
+    setBusy(true);
+    setError("");
+    setNotice("");
+
+    // 1. Ensure a pending couple + code exists for us.
+    const { data: newCode, error: cErr } = await supabase.rpc("create_couple");
+    if (cErr) {
+      setError(prettyError(cErr.message));
+      setBusy(false);
+      return;
+    }
+    setCode(newCode);
+
+    // 2. Email the partner a magic link carrying the code (and their name).
+    const redirect = `${window.location.origin}?invite=${newCode}`;
+    const { error: oErr } = await supabase.auth.signInWithOtp({
+      email: partnerEmail.trim(),
+      options: {
+        emailRedirectTo: redirect,
+        shouldCreateUser: true,
+        data: partnerName.trim() ? { name: partnerName.trim() } : undefined,
+      },
+    });
+    if (oErr) {
+      setError(prettyError(oErr.message));
+      setBusy(false);
+      return;
+    }
+
+    setView("waiting");
     setBusy(false);
   }
 
@@ -94,17 +133,61 @@ export default function Pairing({ profile, couple, onChange }) {
           <div className="stack">
             {view === "choose" && (
               <>
-                <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+                <div style={{ textAlign: "center", marginBottom: "1.6rem" }}>
                   <h1 className="headline">you + one.</h1>
                   <p className="lead" style={{ marginTop: "0.7rem" }}>
-                    thrdwheel works in twos. link up with your partner to begin.
+                    invite your partner by email — they just tap the link and
+                    set a password.
                   </p>
                 </div>
 
                 {error && <div className="error">{error}</div>}
+                {notice && (
+                  <div className="error" style={{ background: "rgba(5,5,6,0.16)" }}>
+                    {notice}
+                  </div>
+                )}
+
+                <form onSubmit={invitePartner}>
+                  <div className="field">
+                    <label htmlFor="pname">their name (optional)</label>
+                    <input
+                      id="pname"
+                      className="input"
+                      type="text"
+                      placeholder="e.g. leo"
+                      value={partnerName}
+                      onChange={(e) => setPartnerName(e.target.value)}
+                      autoComplete="off"
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="pemail">their email</label>
+                    <input
+                      id="pemail"
+                      className="input"
+                      type="email"
+                      placeholder="them@example.com"
+                      value={partnerEmail}
+                      onChange={(e) => setPartnerEmail(e.target.value)}
+                      required
+                      autoComplete="off"
+                    />
+                  </div>
+                  <div className="spacer" />
+                  <button
+                    className="btn btn--dark"
+                    type="submit"
+                    disabled={busy || !partnerEmail.trim()}
+                  >
+                    {busy ? "sending…" : "send invite"}
+                  </button>
+                </form>
+
+                <div className="divider">or</div>
 
                 <button
-                  className="btn btn--dark"
+                  className="btn btn--ghost"
                   onClick={() => {
                     setError("");
                     setView("enter");
@@ -113,14 +196,14 @@ export default function Pairing({ profile, couple, onChange }) {
                   enter a code
                 </button>
 
-                <div className="divider">or</div>
-
                 <button
-                  className="btn btn--light"
+                  type="button"
+                  className="link-btn"
+                  style={{ marginTop: "1.1rem", alignSelf: "center" }}
                   onClick={generate}
                   disabled={busy}
                 >
-                  {busy ? "…" : "new here — generate a code"}
+                  or share a code manually
                 </button>
               </>
             )}
@@ -177,10 +260,13 @@ export default function Pairing({ profile, couple, onChange }) {
             {view === "waiting" && (
               <>
                 <div style={{ textAlign: "center", marginBottom: "1.4rem" }}>
-                  <h1 className="headline">your code.</h1>
+                  <h1 className="headline">
+                    {partnerEmail ? "invite sent." : "your code."}
+                  </h1>
                   <p className="lead" style={{ marginTop: "0.7rem" }}>
-                    share it with your partner. this screen updates the moment
-                    they join.
+                    {partnerEmail
+                      ? `we emailed ${partnerEmail} an invite. this updates the moment they join — or share the code below as a backup.`
+                      : "share it with your partner. this screen updates the moment they join."}
                   </p>
                 </div>
 
