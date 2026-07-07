@@ -147,8 +147,9 @@ export default function Home({ session, profile, couple, onLeave }) {
   }
 
   async function unpair() {
+    // Unlink the couple (data is retained server-side) and reset by signing out.
     await supabase.rpc("leave_couple");
-    onLeave();
+    await supabase.auth.signOut();
   }
 
   return (
