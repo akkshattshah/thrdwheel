@@ -139,17 +139,31 @@ export default function App() {
   if (loadingProfile) return <Loader />;
   if (!profile) return <SetupNeeded onRetry={refresh} />;
 
+  // Arrived from an email invite link (?invite=CODE) and not yet paired →
+  // set a password and auto-join FIRST (this must happen before onboarding).
+  const inviteCode = new URLSearchParams(window.location.search).get("invite");
+  if (inviteCode && !(couple && couple.status === "active")) {
+    return <AcceptInvite code={inviteCode} onDone={refresh} />;
+  }
+
+  // Onboarding gate — shown before pairing/chat to anyone who hasn't done it.
+  // Uses strict === null so it stays dormant until profiles.onboarded_at exists
+  // (a missing column reads as undefined and safely skips the gate).
+  if (profile.onboarded_at === null) {
+    return (
+      <Onboarding
+        session={session}
+        profile={profile}
+        couple={couple}
+        onDone={refresh}
+      />
+    );
+  }
+
   if (couple && couple.status === "active") {
     return (
       <Home session={session} profile={profile} couple={couple} onLeave={refresh} />
     );
-  }
-
-  // Arrived from an email invite link (?invite=CODE) and not yet paired →
-  // set a password and auto-join, instead of the normal pairing screen.
-  const inviteCode = new URLSearchParams(window.location.search).get("invite");
-  if (inviteCode) {
-    return <AcceptInvite code={inviteCode} onDone={refresh} />;
   }
 
   return (
