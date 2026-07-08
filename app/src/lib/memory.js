@@ -46,6 +46,48 @@ export async function saveMemories(userId, coupleId, facts) {
   if (rows.length) await supabase.from("memories").insert(rows);
 }
 
+// ——— Onboarding seed ———
+
+// Turn the onboarding answers into durable memories and mark the user onboarded.
+// All seed answers are stored PRIVATE (never shared with the partner). If the
+// user isn't paired yet (initiator, pre-pairing), coupleId is null — see note.
+export async function saveOnboarding(userId, coupleId, answers) {
+  const facts = [
+    answers.partner && {
+      attribute: "partner_name",
+      content: `they call their partner "${answers.partner.trim()}"`,
+    },
+    answers.duration && {
+      attribute: "relationship_length",
+      content: `together ${answers.duration}`,
+    },
+    answers.intent && {
+      attribute: "intent",
+      content: `came to thrdwheel because: ${answers.intent}`,
+    },
+    answers.style && {
+      attribute: "conflict_style",
+      content: `when something's wrong, ${answers.style}`,
+    },
+    answers.goal && {
+      attribute: "goal",
+      content: `hopes that in a few months: ${answers.goal.trim()}`,
+    },
+  ]
+    .filter(Boolean)
+    .map((f) => ({ ...f, sensitivity: "sensitive" })); // sensitive → private
+
+  // memories are couple-scoped today, so we can only persist the facts once a
+  // couple exists. Either way we stamp onboarded_at so the gate lets them through.
+  if (coupleId && facts.length) {
+    await saveMemories(userId, coupleId, facts);
+  }
+  await supabase
+    .from("profiles")
+    .update({ onboarded_at: new Date().toISOString() })
+    .eq("id", userId);
+}
+
 // ——— Memory management (the "what I remember" / consent-to-share screen) ———
 
 // All of the signed-in user's own facts, newest first (for the panel).

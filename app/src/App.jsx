@@ -4,6 +4,7 @@ import Auth from "./pages/Auth.jsx";
 import Pairing from "./pages/Pairing.jsx";
 import Home from "./pages/Home.jsx";
 import AcceptInvite from "./pages/AcceptInvite.jsx";
+import Onboarding from "./pages/Onboarding.jsx";
 
 function Loader() {
   return (
@@ -123,6 +124,14 @@ export default function App() {
   const refresh = useCallback(() => {
     if (session?.user) loadProfile(session.user.id);
   }, [session, loadProfile]);
+
+  // ——— Dev-only: preview the onboarding flow standalone, no signup needed.
+  // Visit /?preview=onboarding — renders the flow with a mock profile and saves
+  // nothing (answers just log to the console). Remove/guard before launch.
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("preview") === "onboarding") {
+    return <Onboarding preview profile={{ name: "Alex" }} />;
+  }
 
   // ——— Routing (a 3-state machine) ———
   if (session === undefined) return <Loader />;
